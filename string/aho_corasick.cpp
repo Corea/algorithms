@@ -31,7 +31,7 @@ struct AhoCorasick {
             value[now] = s.second;
         }
 
-        fail.resize(trie.size(), 0);
+        fail = vector<int>(trie.size(), 0);
 
         queue<int> Q; Q.push(0);
         while(!Q.empty()) {
@@ -51,5 +51,21 @@ struct AhoCorasick {
                 }
             }
         }
+    }
+
+    bool match(const string &s) {
+        int now = 0;
+        for(auto &c : s) {
+            while(now && !trie[now][convert(c)]) {
+                now = fail[now];
+            }
+            now = trie[now][convert(c)];
+            
+            if(value[now]) {
+                // matched! you can do something in here. 
+                return true;
+            }
+        }
+        return false;
     }
 };
